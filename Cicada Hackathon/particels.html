@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Particles.js Demo</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        #particles-js {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            z-index: -1;
+        }
+        
+        .count-particles {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 5px;
+            color: #13E8E9;
+            font-size: 14px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            font-weight: bold;
+            z-index: 100;
+        }
+
+        @media (max-width: 768px) {
+            .count-particles {
+                font-size: 12px;
+                top: 10px;
+                left: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="count-particles">
+        <span class="js-count-particles">0</span> particles
+    </div>
+    
+    <div id="particles-js"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        particlesJS('particles-js', {
+            particles: {
+                number: {
+                    value: 80,
+                    density: {
+                        enable: true,
+                        value_area: 800
+                    }
+                },
+                color: {
+                    value: '#ffffff'
+                },
+                shape: {
+                    type: 'circle'
+                },
+                opacity: {
+                    value: 0.5,
+                    random: true,
+                    anim: {
+                        enable: true,
+                        speed: 1,
+                        opacity_min: 0.1,
+                        sync: false
+                    }
+                },
+                size: {
+                    value: 3,
+                    random: true,
+                    anim: {
+                        enable: true,
+                        speed: 3,
+                        size_min: 0.1,
+                        sync: false
+                    }
+                },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: '#ffffff',
+                    opacity: 0.4,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 3,
+                    direction: 'none',
+                    random: false,
+                    straight: false,
+                    out_mode: 'bounce',
+                    bounce: true,
+                    attract: {
+                        enable: true,
+                        rotateX: 600,
+                        rotateY: 1200
+                    }
+                }
+            },
+            interactivity: {
+                detect_on: 'window',
+                events: {
+                    onhover: {
+                        enable: true,
+                        mode: 'grab'
+                    },
+                    onclick: {
+                        enable: true,
+                        mode: 'push'
+                    },
+                    resize: true
+                },
+                modes: {
+                    grab: {
+                        distance: 140,
+                        line_linked: {
+                            opacity: 1,
+                            color: '#13E8E9'
+                        }
+                    },
+                    push: {
+                        particles_nb: 4
+                    }
+                }
+            },
+            retina_detect: true
+        });
+
+        // Responsive particle count adjustment
+        function adjustParticleCount() {
+            const width = window.innerWidth;
+            let particleCount;
+            
+            if (width < 576) {
+                particleCount = 40;
+            } else if (width < 768) {
+                particleCount = 60;
+            } else if (width < 1024) {
+                particleCount = 80;
+            } else {
+                particleCount = 100;
+            }
+
+            if (window.pJSDom && window.pJSDom[0].pJS) {
+                window.pJSDom[0].pJS.particles.number.value = particleCount;
+                window.pJSDom[0].pJS.particles.number.density.value_area = width * 0.8;
+                window.pJSDom[0].pJS.fn.particlesRefresh();
+            }
+        }
+
+        // Update particle count display
+        function updateParticleCount() {
+            const countElement = document.querySelector('.js-count-particles');
+            if (window.pJSDom && window.pJSDom[0].pJS.particles && window.pJSDom[0].pJS.particles.array) {
+                countElement.textContent = window.pJSDom[0].pJS.particles.array.length;
+            }
+            requestAnimationFrame(updateParticleCount);
+        }
+
+        // Event listeners for responsiveness
+        window.addEventListener('resize', adjustParticleCount);
+        window.addEventListener('load', () => {
+            adjustParticleCount();
+            updateParticleCount();
+        });
+    </script>
+</body>
+</html>
